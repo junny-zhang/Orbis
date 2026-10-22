@@ -1,0 +1,75 @@
+/*
+ * Orbis 默认键位图（由 hardware/plate/gen_firmware.py 生成，勿手改）
+ * 每层 71 个绑定，顺序与 orbis.dtsi 的 matrix-transform 一致：
+ *   15 / 15 / 14 / 14 / 13
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/pointing.h>
+#include <dt-bindings/zmk/ext_power.h>
+#include <dt-bindings/zmk/outputs.h>
+
+#define BASE 0
+#define NAV 1
+#define FN 2
+
+/ {
+    /* 默认层：编码器滚屏。顺时针=向上滚，逆时针=向下滚 */
+    behaviors {
+        scroll_encoder: scroll_encoder {
+            compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            bindings = <&msc SCRL_UP>, <&msc SCRL_DOWN>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        /* ---------- 第 0 层：BASE ---------- */
+        base_layer {
+            display-name = "BASE";
+            bindings = <
+&kp ESC &kp N1 &kp N2 &kp N3 &kp N4 &kp N5 &kp N6 &kp N7 &kp N8 &kp N9 &kp N0 &kp MINUS &kp EQUAL &kp BSPC &kp GRAVE
+&kp TAB &kp Q &kp W &kp E &kp R &kp T &kp Y &kp U &kp I &kp O &kp P &kp LBKT &kp RBKT &kp BSLH &kp PG_UP
+&kp CLCK &kp A &kp S &kp D &kp F &kp G &kp H &kp J &kp K &kp L &kp SEMI &kp SQT &kp RET &kp PG_DN
+&kp LSHFT &kp Z &kp X &kp C &kp V &kp B &kp N &kp M &kp COMMA &kp DOT &kp FSLH &kp RSHFT &kp PSCRN &kp DEL
+&mo NAV &kp LCTRL &kp LGUI &kp LALT &kp SPACE &kp C_MUTE &kp SPACE &mo FN &kp RCTRL &kp RALT &kp HOME &kp PAUSE_BREAK &kp END
+            >;
+
+            sensor-bindings = <&scroll_encoder>;
+        };
+
+        /* ---------- 第 1 层：NAV ---------- */
+        nav_layer {
+            display-name = "NAV";
+            bindings = <
+&trans &kp F1 &kp F2 &kp F3 &kp F4 &kp F5 &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &kp F11 &kp F12 &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &kp HOME
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &kp END
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &kp INS
+&trans &trans &trans &trans &trans &kp C_MUTE &trans &trans &trans &trans &trans &trans &trans
+            >;
+
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+        };
+
+        /* ---------- 第 2 层：FN ---------- */
+        fn_layer {
+            display-name = "FN";
+            bindings = <
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &kp C_MUTE &trans &trans &trans &trans &trans &trans &trans
+            >;
+
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+        };
+    };
+};
