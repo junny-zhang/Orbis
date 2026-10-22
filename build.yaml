@@ -1,0 +1,15 @@
+# ZMK 构建目标声明
+# 说明：`nice_nano//zmk` 是当前推荐的写法（等价于旧写法 `nice_nano_v2`）。
+#       国产 SuperMini nRF52840 在 ZMK 中就是按 nice!nano 兼容板使用的，
+#       大量公开的 SuperMini 配置都直接写 `board: nice_nano_v2`。
+include:
+  - board: nice_nano//zmk
+    shield: orbis_left
+    artifact-name: orbis_left
+  - board: nice_nano//zmk
+    shield: orbis_right
+    artifact-name: orbis_right
+  # 换主控/换机时刷这个清空配对与设置
+  - board: nice_nano//zmk
+    shield: settings_reset
+    artifact-name: settings_reset

@@ -1,0 +1,68 @@
+/*
+ * Orbis 左手（中央 / central）overlay
+ *   - 5 行 × 7 列矩阵（COL0..COL6 直连 MCU）
+ *     第 4 行第 5 列 = 编码器按压开关（编码器装在外壳上，经 J2 接入）
+ *   - 打开左侧编码器与轨迹球监听器
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+#include "orbis.dtsi"
+
+&kscan0 {
+    col-gpios
+        = <&pro_micro 5 GPIO_ACTIVE_HIGH>    /* COL0  D5  P0.24 */
+        , <&pro_micro 6 GPIO_ACTIVE_HIGH>    /* COL1  D6  P1.00 */
+        , <&pro_micro 7 GPIO_ACTIVE_HIGH>    /* COL2  D7  P0.11 */
+        , <&pro_micro 8 GPIO_ACTIVE_HIGH>    /* COL3  D8  P1.04 */
+        , <&pro_micro 9 GPIO_ACTIVE_HIGH>    /* COL4  D9  P1.06 */
+        , <&pro_micro 10 GPIO_ACTIVE_HIGH>    /* COL5  D10  P0.09 */
+        , <&pro_micro 18 GPIO_ACTIVE_HIGH>    /* COL6  D18  P1.15 */
+        ;
+    row-gpios
+        = <&pro_micro 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW0  D0  P0.08 */
+        , <&pro_micro 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW1  D1  P0.06 */
+        , <&pro_micro 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW2  D16  P0.10 */
+        , <&pro_micro 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW3  D21  P0.31 */
+        , <&pro_micro 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW4  D4  P0.22 */
+        ;
+};
+
+&left_encoder {
+    status = "okay";
+};
+
+&trackball_listener {
+    status = "okay";
+};
+
+/* ---- SSD1306 OLED（装在外壳上，经 J3 接线盘接入）----
+ * 直接用 nice!nano 板级预置的 i2c0：SDA = D2 (P0.17)、SCL = D3 (P0.20)，
+ * 不需要自定义 pinctrl。所以左手的 ROW2/ROW3 挪到了 D16/D21。
+ * 模块若是 0.91 寸 128x32：height 改 32、multiplex-ratio 改 31。
+ */
+&i2c0 {
+    status = "okay";
+
+    ssd1306: ssd1306@3c {
+        compatible = "solomon,ssd1306fb";
+        reg = <0x3c>;
+        width = <128>;
+        height = <64>;
+        segment-offset = <0>;
+        page-offset = <0>;
+        display-offset = <0>;
+        multiplex-ratio = <63>;
+        segment-remap;
+        com-invdir;
+        prechargep = <0x22>;
+    };
+};
+
+/ {
+    chosen {
+        zephyr,display = &ssd1306;
+    };
+};
+
+/* 左手剩余空闲脚：D14 / D15 */

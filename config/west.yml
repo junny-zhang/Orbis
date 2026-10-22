@@ -1,0 +1,23 @@
+# ZMK 用户配置仓库的 west manifest
+# zmk 走 main 分支（74HC595 的 zmk,gpio-595 驱动与最新分体/指针 API 都在 main 上）
+manifest:
+  remotes:
+    - name: zmkfirmware
+      url-base: https://github.com/zmkfirmware
+    - name: george-norton
+      url-base: https://github.com/george-norton
+
+  projects:
+    - name: zmk
+      remote: zmkfirmware
+      revision: main
+      import: app/west.yml
+
+    # PMW3360 轨迹球驱动（ZMK 外置模块，MIT）
+    # 建议后续把 revision 钉到某个具体 commit，避免上游改动把构建搞坏
+    - name: zmk-driver-pmw3360
+      remote: george-norton
+      revision: main
+
+  self:
+    path: config
