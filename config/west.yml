@@ -1,0 +1,26 @@
+# ZMK 用户配置仓库的 west manifest
+# 本文件里的 revision 全部钉到具体 commit。
+# 下面两个 SHA 是 2026-10-22 GitHub Actions run #14 编译通过时的确切版本，
+# 改回 main 会失去可复现性：上游一改就可能第二天变红。
+# 想升级时把 SHA 换成新的、跑一次 Actions 确认通过再提交。
+manifest:
+  remotes:
+    - name: zmkfirmware
+      url-base: https://github.com/zmkfirmware
+    - name: george-norton
+      url-base: https://github.com/george-norton
+
+  projects:
+    - name: zmk
+      remote: zmkfirmware
+      revision: 4dd95d7840eb3d5a3f59bb29fbf1ab054715ef85   # zmk main @ 2026-10-22（run #14 验证通过）
+      import: app/west.yml
+
+    # PMW3360 轨迹球驱动（ZMK 外置模块，MIT）
+    # revision 已钉到具体 commit（见上）
+    - name: zmk-driver-pmw3360
+      remote: george-norton
+      revision: 0dfa2f0411b795613a35f222f993e45a1e4cc32a   # main @ 2026-10-22
+
+  self:
+    path: config
