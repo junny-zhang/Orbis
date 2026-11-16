@@ -39,7 +39,8 @@
 /* ---- SSD1306 OLED（装在外壳上，经 J3 接线盘接入）----
  * 直接用 nice!nano 板级预置的 i2c0：SDA = D2 (P0.17)、SCL = D3 (P0.20)，
  * 不需要自定义 pinctrl。所以左手的 ROW2/ROW3 挪到了 D16/D21。
- * 模块若是 0.91 寸 128x32：height 改 32、multiplex-ratio 改 31。
+ * 当前是用的0.91寸 128x32：height 改 32、multiplex-ratio 改 31
+ * 模块若是 0.96 寸 128x64：height 改 64、multiplex-ratio 改 63。
  */
 &i2c0 {
     status = "okay";
@@ -48,11 +49,11 @@
         compatible = "solomon,ssd1306fb";
         reg = <0x3c>;
         width = <128>;
-        height = <64>;
+        height = <32>;
         segment-offset = <0>;
         page-offset = <0>;
         display-offset = <0>;
-        multiplex-ratio = <63>;
+        multiplex-ratio = <31>;
         segment-remap;
         com-invdir;
         prechargep = <0x22>;
